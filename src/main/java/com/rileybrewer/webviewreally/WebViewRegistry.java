@@ -13,7 +13,8 @@ public class WebViewRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
         return Arrays.asList(
-                WebViewDetector.ISSUE
+                WebViewDetector.ISSUE_1,
+                WebViewDetector.ISSUE_2
         );
     }
 }

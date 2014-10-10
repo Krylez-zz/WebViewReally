@@ -15,15 +15,25 @@ public class WebViewDetector extends ResourceXmlDetector implements Detector.Jav
 
     private static final String WEB_VIEW = "WebView";
 
-    public static final Issue ISSUE = Issue.create(
-            "WebViewsAreDumb",
-            "Really?",
+    public static final Issue ISSUE_1 = Issue.create(
+            "WebViewsAreDumb1",
+            "WebView? Really? These are performance hogs.",
             "Looks for usages of WebView",
             "WebViews are heavyweight objects. They incur a significant performance penalty that visibly affects the " +
                     "UI. Even worse, they use significantly more memory than an equivalent native UI. You shouldn't " +
                     "use them.",
             Category.PERFORMANCE, 6, Severity.WARNING,
             new Implementation(WebViewDetector.class, Scope.RESOURCE_FILE_SCOPE));
+
+    public static final Issue ISSUE_2 = Issue.create(
+            "WebViewsAreDumb2",
+            "WebView? Really? These are performance hogs.",
+            "Looks for usages of WebView",
+            "WebViews are heavyweight objects. They incur a significant performance penalty that visibly affects the " +
+                    "UI. Even worse, they use significantly more memory than an equivalent native UI. You shouldn't " +
+                    "use them.",
+            Category.PERFORMANCE, 6, Severity.WARNING,
+            new Implementation(WebViewDetector.class, Scope.JAVA_FILE_SCOPE));
 
     @Override
     public Collection<String> getApplicableElements() {
@@ -33,10 +43,13 @@ public class WebViewDetector extends ResourceXmlDetector implements Detector.Jav
 
     @Override
     public void visitElement(XmlContext context, Element element) {
-        context.report(ISSUE, element, context.getLocation(element),
-                "WebView? Really?", null);
+        context.report(
+                ISSUE_1,
+                element,
+                context.getLocation(element),
+                "WebView? Really? These are performance hogs.",
+                null);
     }
-
 
     // ---- Implements JavaScanner ----
 
@@ -67,8 +80,12 @@ public class WebViewDetector extends ResourceXmlDetector implements Detector.Jav
             TypeReference reference = node.astTypeReference();
             String typeName = reference.astParts().last().astIdentifier().astValue();
             if (typeName.equals(WEB_VIEW)) {
-                context.report(ISSUE, node, context.getLocation(node),
-                        "WebView? Really?", null);
+                context.report(
+                        ISSUE_2,
+                        node,
+                        context.getLocation(node),
+                        "WebView? Really? These are performance hogs.",
+                        null);
             }
             return super.visitConstructorInvocation(node);
         }
